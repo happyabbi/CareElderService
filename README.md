@@ -1,6 +1,10 @@
 
 #竹護您，主護您，祝福您。
 
+CARE your family.
+
+用藥安全，用藥關懷，用藥紀錄。
+
 #使用資料
 <ol>
 <li>衛福部藥品詳細處方成分資料集 https://data.gov.tw/dataset/9121 </i>
