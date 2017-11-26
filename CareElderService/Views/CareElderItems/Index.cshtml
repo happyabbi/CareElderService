@@ -1,0 +1,135 @@
+﻿@model IEnumerable<FileUploadsInAspNetMvc.Models.CareElderItem>
+
+@{
+
+    ViewBag.Title = "管理設定";
+    string PSId = "1387561314672488";
+    if (ViewBag.PSId != null)
+    {
+        PSId = ViewBag.PSId;
+    }
+    string link1 = "/CareElderItems/CreateMedicine?PSId=" + PSId;
+    string link2 = "/CareElderItems/CreateEating?PSId=" + PSId;
+    string link3 = "/CareElderItems/CreateExercising?PSId=" + PSId;
+    string link4 = "/CareElderItems/MultipleUpload?PSId=" + PSId;
+
+    string json = ViewBag.Json;
+
+}
+<link href="~/Content/RTable.css" rel="stylesheet" />
+<h2>@ViewBag.Title</h2>
+
+
+
+<p>
+    <button type="button" class="btn btn-danger" onclick="location.href = '@link1'">建立用藥提醒</button>
+    <button type="button" class="btn btn-warning" onclick="location.href = '@link2'">建立用餐提醒</button>
+    <button type="button" class="btn btn-primary" onclick="location.href = '@link3'">建立運動提醒</button>
+    <button type="button" class="btn btn-success" onclick="location.href = '@link4'">建立貼心圖庫</button>
+
+</p>
+
+<div class="container1">
+    <table class="responsive-table">
+        <thead>
+            <tr>
+
+
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.SubjectType)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.CareSubject)
+                </th>
+                <!--
+                    <th>
+                    @Html.DisplayNameFor(model => model.ContentType)
+                </th>
+        -->
+
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.CareContent)
+                </th>
+
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.SendTime1)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.SendTime2)
+                </th>
+                <th scope="col">
+
+                    @Html.DisplayNameFor(model => model.SendTime3)
+                </th>
+                <th scope="col">
+                </th>
+            </tr>
+
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+
+
+                    <th scope="row">
+                        @Html.DisplayFor(modelItem => item.SubjectType)
+                    </th>
+                    <td data-title="提醒主題">
+                        @Html.DisplayFor(modelItem => item.CareSubject)
+                    </td>
+                    <!--
+                            <td>
+                    @Html.DisplayFor(modelItem => item.ContentType)
+                </td>
+                -->
+
+                    <td data-title="內容">
+                        @Html.DisplayFor(modelItem => item.CareContent)
+                    </td>
+
+                    <td data-title="時間1">
+                        @Html.DisplayFor(modelItem => item.SendTime1)
+                    </td>
+                    <td data-title="時間2">
+                        @Html.DisplayFor(modelItem => item.SendTime2)
+                    </td>
+                    <td data-title="時間3">
+                        @Html.DisplayFor(modelItem => item.SendTime3)
+                    </td>
+                    <!--
+                            <td>
+
+                    @{
+                        if (item.ImageUrl != null)
+                        {
+                            var temp = item.ImageUrl.Replace("\\", "/").Replace("~", "");
+                            <text>@temp</text>
+
+                        }
+                    }
+
+                </td>
+                -->
+
+                    <td>
+
+
+
+                        @Html.ActionLink("PreSend", "Send", new { id = item.Id, preSend = "true" }) |
+
+                        @Html.ActionLink("Send", "Send", new { id = item.Id, preSend = "false" }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </td>
+                </tr>
+
+                            } 
+        </tbody>
+
+
+    </table>
+
+
+</div>
+

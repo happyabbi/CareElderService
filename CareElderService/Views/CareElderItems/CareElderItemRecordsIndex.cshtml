@@ -1,0 +1,71 @@
+﻿@model IEnumerable<FileUploadsInAspNetMvc.Models.CareElderItemRecord>
+@{
+    ViewBag.Title = "查詢紀錄";
+    string PSId = "1387561314672488";
+    if (ViewBag.PSId != null)
+    {
+        PSId = ViewBag.PSId;
+    }
+    string link1 = "/CareElderItems/CareElderItemRecordsIndex?subjectType=用藥紀錄&PSId=" + PSId;
+    string link2 = "/CareElderItems/CareElderItemRecordsIndex?subjectType=用餐紀錄&PSId=" + PSId;
+    string link3 = "/CareElderItems/CareElderItemRecordsIndex?subjectType=運動紀錄&PSId=" + PSId;
+
+    string eUnit = "";
+    if (ViewBag.SubjectType == "運動紀錄") {
+        eUnit = "(分)";
+    }
+
+}
+
+<h2>@ViewBag.SubjectType</h2>
+
+<button type="button" class="btn btn-danger" onclick="location.href = '@link1'">查詢用藥紀錄</button>
+<button type="button" class="btn btn-warning" onclick="location.href = '@link2'">查詢用餐紀錄</button>
+<button type="button" class="btn btn-primary" onclick="location.href = '@link3'">查詢運動紀錄</button>
+<p/>
+
+
+@{
+    if (ViewBag.SubjectType != "已紀錄")
+    {
+
+        <table class="table table-hover">
+            <thead class="alert-info">
+                <tr>
+                    <th> @Html.DisplayNameFor(model => model.Subject)</th>
+                    <th> @Html.DisplayNameFor(model => model.Result)   @eUnit</th>
+                    <th> @Html.DisplayNameFor(model => model.CreateDateTime)</th>
+                    @{  if (ViewBag.SubjectType == "用餐紀錄")
+                {
+                            <text>
+                                <th> @Html.DisplayNameFor(model => model.ImageUrl)</th></text>
+                        }
+                    }
+
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td> @Html.DisplayFor(modelItem => item.Subject)</td>
+                    <td> @Html.DisplayFor(modelItem => item.Result)</td>
+                    <td> @Html.DisplayFor(modelItem => item.CreateDateTime)</td>
+                    @{  if (ViewBag.SubjectType == "用餐紀錄")
+                        {
+                            <text>
+                                <td><img class="img-responsive" src="@item.ImageUrl" /> </td>
+                            </text>
+                        }
+                    }
+                </tr>
+
+             }
+
+
+        </table>
+
+                        }
+
+}
+
+

@@ -1,0 +1,117 @@
+﻿@model FileUploadsInAspNetMvc.Models.CareElderItemRecordViewModel
+
+@{
+    ViewBag.Title = "用藥紀錄";
+
+    
+
+    DateTime saveNow = DateTime.UtcNow;
+
+    DateTime utcDt = DateTime.SpecifyKind(saveNow, DateTimeKind.Utc);
+
+    TimeZoneInfo TW_TimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("Taipei Standard Time");
+
+    DateTime targetTime = TimeZoneInfo.ConvertTime(utcDt, TW_TimeZoneInfo);
+
+    List<SelectListItem> mySelectItemList = new List<SelectListItem>();
+
+    mySelectItemList.Add(new SelectListItem()
+    {
+        Text = "有服藥(" + ViewBag.CareContent + ")",
+        Value = "有服藥(" + ViewBag.CareContent + ")",
+        Selected = true
+    });
+
+    mySelectItemList.Add(new SelectListItem()
+    {
+        Text = "未服藥",
+        Value = "未服藥",
+        Selected = false
+    });
+
+
+    string PSId = "1387561314672488";
+    if(ViewBag.PSId != null)
+    {
+        PSId = ViewBag.PSId;
+    }
+
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+@using (Html.BeginForm("CreateMedicineRecord", "CareElderItems", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <!--
+                <div class="form-group">
+                @Html.LabelFor(model => model.PSId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.PSId, new { htmlAttributes = new { @class = "form-control", @Value = PSId } })
+                    @Html.ValidationMessageFor(model => model.PSId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+    -->
+
+
+        @Html.HiddenFor(model => model.PSId, new { @Value = PSId })
+
+
+
+        @Html.HiddenFor(model => model.SubjectType, new { @Value = ViewBag.Title })
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Subject, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.Subject } })
+                @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Result, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Result, mySelectItemList, htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CreateDateTime, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CreateDateTime, new { htmlAttributes = new { @class = "form-control", @Value = targetTime.ToString("yyyy/MM/dd HH:mm") } })
+            </div>
+        </div>
+
+
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10"> 
+                <input type="submit" value="紀錄" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+
+

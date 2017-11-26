@@ -1,0 +1,92 @@
+﻿@model FileUploadsInAspNetMvc.Models.CareElderMedicine
+@{
+    ViewBag.Title = "查詢藥品";
+    IEnumerable<FileUploadsInAspNetMvc.Models.CareElderMedicine> cems = ViewBag.Medicines;
+
+}
+<link href="~/Content/RTable.css" rel="stylesheet" />
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("QueryMedicine", "CareElderItems", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.EName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.EName, new { htmlAttributes = new { @class = "form-control", @Value = "Lovastatin" } })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.CName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.CName, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="查詢" class="btn btn-default" />
+        </div>
+    </div>
+}
+<hr/>
+@{
+    if (cems != null && cems.Count() < 50)
+    {
+
+        <div class="container1">
+            <table class="responsive-table">
+                <thead>
+                    <tr>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.CName)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.EName)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Status)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Indication)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.Ingredient)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.PackageCode)
+                        </th>
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.ApplyCompany)
+
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in cems)
+                    {
+
+                    <tr>
+                        <th scope="row">@item.CName</th>
+                        <td data-title="英文名字">@item.EName</td>
+                        <td data-title="狀態">@item.Status</td>
+                        <td data-title="處方">@item.Indication</td>
+                        <td data-title="成分">@item.Ingredient</td>
+                        <td data-title="注意事項">@item.PackageCode</td>
+                        <td data-title="申請藥商">@item.ApplyCompany</td>
+
+                    </tr>
+
+                    }
+
+                </tbody>
+
+
+            </table>
+
+        </div>
+
+    }
+}
+

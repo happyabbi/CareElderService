@@ -1,0 +1,140 @@
+﻿@model FileUploadsInAspNetMvc.Models.CareElderExercisingRecordViewModel
+
+@{
+    ViewBag.Title = "運動紀錄";
+
+    DateTime saveNow = DateTime.UtcNow;
+
+    DateTime utcDt = DateTime.SpecifyKind(saveNow, DateTimeKind.Utc);
+
+    TimeZoneInfo TW_TimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("Taipei Standard Time");
+
+    DateTime targetTime = TimeZoneInfo.ConvertTime(utcDt, TW_TimeZoneInfo);
+
+    List<SelectListItem> exercisingSelectItemList = new List<SelectListItem>();
+
+    exercisingSelectItemList.Add(new SelectListItem()
+    {
+        Text = "散步",
+        Value = "散步",
+        Selected = true
+    });
+
+    exercisingSelectItemList.Add(new SelectListItem()
+    {
+        Text = "快走",
+        Value = "快走",
+        Selected = false
+    });
+
+    List<SelectListItem> resultSelectItemList = new List<SelectListItem>();
+
+    resultSelectItemList.Add(new SelectListItem()
+    {
+        Text = "10",
+        Value = "10",
+        Selected = true
+    });
+
+    resultSelectItemList.Add(new SelectListItem()
+    {
+        Text = "20",
+        Value = "20",
+        Selected = false
+    });
+
+    resultSelectItemList.Add(new SelectListItem()
+    {
+        Text = "30",
+        Value = "30",
+        Selected = false
+    });
+
+
+    string PSId = "1387561314672488";
+    if (ViewBag.PSId != null)
+    {
+        PSId = ViewBag.PSId;
+    }
+
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+@using (Html.BeginForm("CreateMedicineRecord", "CareElderItems", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <!--
+                <div class="form-group">
+                @Html.LabelFor(model => model.PSId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.PSId, new { htmlAttributes = new { @class = "form-control", @Value = PSId } })
+                    @Html.ValidationMessageFor(model => model.PSId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+    -->
+
+
+        @Html.HiddenFor(model => model.PSId, new { @Value = PSId })
+
+
+
+        @Html.HiddenFor(model => model.SubjectType, new { @Value = ViewBag.Title })
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Subject, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Subject, exercisingSelectItemList, htmlAttributes: new { @class = "form-control" })
+
+
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Result, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Result, resultSelectItemList, htmlAttributes: new { @class = "form-control" })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CreateDateTime, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CreateDateTime, new { htmlAttributes = new { @class = "form-control", @Value = targetTime.ToString("yyyy/MM/dd HH:mm") } })
+            </div>
+        </div>
+
+
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="紀錄" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+
+
+
+
+
+

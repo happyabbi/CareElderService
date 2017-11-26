@@ -1,0 +1,149 @@
+﻿@model FileUploadsInAspNetMvc.Models.QueryVideoViewModel
+@{
+    ViewBag.Title = "衛教影片";
+    string videoUrl = "//www.youtube.com/watch?v=Vu48K6i_Woo?rel=0&vq=hd1080";
+
+    string[] vArray = ViewBag.VideoArray;
+
+    if (vArray != null) {
+        Random r = new Random();
+        int randomIndex = r.Next(0, vArray.Length - 1);
+
+        videoUrl = vArray[randomIndex] + "?rel=0&vq=hd1080";
+    }
+
+    List<SelectListItem> mySelectItemList = new List<SelectListItem>();
+
+    mySelectItemList.Add(new SelectListItem()
+    {
+        Text = "惡性腫瘤",
+        Value = "惡性腫瘤",
+        Selected = false
+    });
+
+    mySelectItemList.Add(new SelectListItem()
+    {
+        Text = "心臟疾病",
+        Value = "心臟疾病",
+        Selected = true
+    });
+
+    mySelectItemList.Add(new SelectListItem()
+    {
+        Text = "糖尿病",
+        Value = "糖尿病",
+        Selected = false
+    });
+
+    mySelectItemList.Add(new SelectListItem()
+    {
+        Text = "腦血管疾病",
+        Value = "腦血管疾病",
+        Selected = false
+    });
+
+    mySelectItemList.Add(new SelectListItem()
+    {
+        Text = "肺炎",
+        Value = "肺炎",
+        Selected = false
+    });
+
+    mySelectItemList.Add(new SelectListItem()
+    {
+        Text = "高血壓性疾病",
+        Value = "高血壓性疾病",
+        Selected = false
+    });
+
+    mySelectItemList.Add(new SelectListItem()
+    {
+        Text = "腎炎、腎病症候群及腎病變",
+        Value = "腎炎、腎病症候群及腎病變",
+        Selected = false
+    });
+
+    mySelectItemList.Add(new SelectListItem()
+    {
+        Text = "慢性下呼吸道疾病",
+        Value = "慢性下呼吸道疾病",
+        Selected = false
+    });
+}
+<style type="text/css">
+    figure {
+        display: block;
+        background: #eee;
+        padding: 10px;
+    }
+</style>
+<h2>@ViewBag.Title</h2>
+@using (Html.BeginForm("QueryVideo", "CareElderItems", FormMethod.Post, new { enctype = "multipart/form-data", id = "myForm" }))
+{
+@Html.DropDownListFor(model => model.VideoCategory, mySelectItemList, htmlAttributes: new { @class = "form-control", @onchange = "formSubmit();" })
+}
+
+<style scoped>
+    video {
+        width: 100% !important;
+        height: auto !important;
+    }
+</style>
+<script>
+    function formSubmit() {
+        $('#myForm').submit();
+    }
+
+$(function() {
+
+    var $allVideos = $("iframe[src^='//player.vimeo.com'], iframe[src^='//www.youtube.com'], object, embed"),
+    $fluidEl = $("figure");
+
+	$allVideos.each(function() {
+
+	  $(this)
+	    // jQuery .data does not work on object/embed elements
+	    .attr('data-aspectRatio', this.height / this.width)
+	    .removeAttr('height')
+	    .removeAttr('width');
+
+	});
+
+	$(window).resize(function() {
+
+	  var newWidth = $fluidEl.width();
+	  $allVideos.each(function() {
+
+	    var $el = $(this);
+	    $el
+	        .width(newWidth)
+	        .height(newWidth * $el.attr('data-aspectRatio'));
+
+	  });
+
+	}).resize();
+
+});</script>
+
+<div class="jumbotron" style="background:#c7deff">
+
+
+
+    <figure>
+        <iframe width="425" height="350" src="@videoUrl" frameborder="0" allowfullscreen></iframe>
+
+    </figure>
+    @{
+       if (ViewBag.VideoCategory != null)
+       {
+            string theUrl = "/CareElderItems/QueryVideo?videoCategory=" + ViewBag.VideoCategory;
+            <button type="button" class="btn btn-success" onclick="formSubmit();">下一部</button>
+
+        }
+        else
+        {
+            <button type="button" class="btn btn-success" onclick="location.href = '/CareElderItems/QueryVideo'">下一部</button>
+
+        }
+    }
+</div>

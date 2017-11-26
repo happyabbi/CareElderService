@@ -1,0 +1,70 @@
+﻿@model IEnumerable<FileUploadsInAspNetMvc.Models.CareElderImage>
+@{
+    ViewBag.Title = "回憶圖庫";
+    string PSId = "1387561314672488";
+    if (ViewBag.PSId != null)
+    {
+
+        PSId = ViewBag.PSId;
+    }
+}
+
+<h2>回憶圖庫</h2>
+<p></p>
+@{ 
+    if(ViewBag.FileList != null)
+    {
+        List<string> fileList = ViewBag.FileList;
+        foreach(var item in fileList)
+        {
+            <text>
+            @item <br />
+            </text>
+        }
+
+    }
+
+}
+
+
+@using (Html.BeginForm("MultipleUpload", "CareElderItems", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div id="multiple">
+        <input type="file" class="multiple" name="files" multiple />
+    </div>
+    <input type="hidden" name="thePSId" value="@PSId" />
+
+    <input type="radio" name="subjectType" value="用藥提醒" checked/> <text>用藥提醒</text>
+    <input type="radio" name="subjectType" value="用餐提醒" /> <text>用餐提醒</text>
+    <input type="radio" name="subjectType" value="運動提醒" /> <text>運動提醒</text>
+
+
+    <div id="single">
+        <input type="file" class="single" name="files" /><br />
+        <input type="file" class="single" name="files" /><br />
+        <input type="file" class="single" name="files" /><br />
+    </div>
+    <button class="btn btn-default">Upload</button>
+}
+
+@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+            if(window.FileReader != null){
+                $('#single').hide();
+                $('.single').prop('disabled', true);
+            } else {
+                $('#multiple').hide();
+                $('.multiple').prop('disabled', true);
+            }
+        });
+    </script>
+}
+<table class="table-responsive">
+    @{
+        foreach (var item in Model)
+        {
+            <tr><td><img class="img-responsive" src="@item.ImageUrl" /></td></tr>
+        }
+    }
+</table>
